@@ -1,63 +1,112 @@
 using System;
 
-namespace Calculator
+class Calculator
 {
-    class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
+        bool continueCalculating = true;
+
+        while (continueCalculating)
         {
-            double num1, num2, result;
-            char operation;
-            char continueCalc;
-
-            do
+            try
             {
-                Console.Write("\nВведите первое число: ");
-                num1 = Convert.ToDouble(Console.ReadLine());
+            
+                Console.Write("Р’РІРµРґРёС‚Рµ РїРµСЂРІРѕРµ С‡РёСЃР»Рѕ: ");
+                double num1 = Convert.ToDouble(Console.ReadLine());
 
-                Console.Write("Введите второе число: ");
-                num2 = Convert.ToDouble(Console.ReadLine());
+              
+                Console.Write("Р’РІРµРґРёС‚Рµ РІС‚РѕСЂРѕРµ С‡РёСЃР»Рѕ: ");
+                double num2 = Convert.ToDouble(Console.ReadLine());
 
-                Console.Write("Введите операцию (+, -, *, /): ");
-                operation = Console.ReadLine()[0];
+                
+                Console.Write("Р’С‹Р±РµСЂРёС‚Рµ РѕРїРµСЂР°С†РёСЋ (+, -, *, :): ");
+                char operation = Console.ReadKey().KeyChar;
+                Console.WriteLine(); 
 
+                double result = 0;
+                bool isValidOperation = true;
 
-
+            
                 switch (operation)
                 {
                     case '+':
-                        result = num1 + num2;
-                        Console.WriteLine($"Результат: {num1} + {num2} = {result}");
+                        result = Add(num1, num2);
                         break;
                     case '-':
-                        result = num1 - num2;
-                        Console.WriteLine($"Результат: {num1} - {num2} = {result}");
+                        result = Subtract(num1, num2);
                         break;
                     case '*':
-                        result = num1 * num2;
-                        Console.WriteLine($"Результат: {num1} * {num2} = {result}");
+                        result = Multiply(num1, num2);
                         break;
-                    case '/':
-                        if (num2 != 0)
-                        {
-                            result = num1 / num2;
-                            Console.WriteLine($"Результат: {num1} / {num2} = {result}");
-                        }
-                        else
-                        {
-                            Console.WriteLine("Ошибка: деление на ноль!");
-                        }
+                    case ':':
+                        result = Divide(num1, num2);
                         break;
                     default:
-                        Console.WriteLine("Некорректная операция");
+                        isValidOperation = false;
+                        Console.WriteLine("РћС€РёР±РєР°: РќРµРІРµСЂРЅР°СЏ РѕРїРµСЂР°С†РёСЏ!");
                         break;
                 }
 
-                Console.Write("Хотите продолжить вычисления? (y/n):");
-                continueCalc = Console.ReadLine()[0];
+               
+                if (isValidOperation)
+                {
+                    Console.WriteLine($"Р РµР·СѓР»СЊС‚Р°С‚: {num1} {operation} {num2} = {result}");
+                }
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("РћС€РёР±РєР°: Р’РІРµРґРµРЅРѕ РЅРµРєРѕСЂСЂРµРєС‚РЅРѕРµ С‡РёСЃР»Рѕ!");
+            }
+            catch (DivideByZeroException)
+            {
+                Console.WriteLine("РћС€РёР±РєР°: Р”РµР»РµРЅРёРµ РЅР° РЅРѕР»СЊ РЅРµРІРѕР·РјРѕР¶РЅРѕ!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР°: {ex.Message}");
+            }
 
-            } while (continueCalc == 'y' || continueCalc == 'Y');
+            Console.WriteLine("\nРҐРѕС‚РёС‚Рµ РІС‹РїРѕР»РЅРёС‚СЊ РµС‰Рµ РѕРґРЅРѕ РІС‹С‡РёСЃР»РµРЅРёРµ? (y/n)");
+            char response = Console.ReadKey().KeyChar;
+            Console.WriteLine(); 
 
+            if (response != 'y' && response != 'Y' && response != 'РЅ' && response != 'Рќ')
+            {
+                continueCalculating = false;
+            }
+
+            Console.WriteLine();
         }
+
+        Console.WriteLine("РќР°Р¶РјРёС‚Рµ Р»СЋР±СѓСЋ РєР»Р°РІРёС€Сѓ РґР»СЏ РІС‹С…РѕРґР°...");
+        Console.ReadKey();
+    }
+
+  
+    static double Add(double a, double b)
+    {
+        return a + b;
+    }
+
+   
+    static double Subtract(double a, double b)
+    {
+        return a - b;
+    }
+
+    
+    static double Multiply(double a, double b)
+    {
+        return a * b;
+    }
+
+    
+    static double Divide(double a, double b)
+    {
+        if (b == 0)
+        {
+            throw new DivideByZeroException();
+        }
+        return a / b;
     }
 }
